@@ -26,4 +26,4 @@ like it too.
 The posts are markdown and the site uses only CSS3 and HTML5, i.e. no
 JavaScript. The source is available from the [GitHub repository][github].
 
-[github]: https://github.com/aji/blog
+[github]: https://github.com/aji/blog-content
