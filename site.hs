@@ -3,10 +3,12 @@
 import           Data.Monoid (mappend)
 import           Hakyll
 
+config :: Configuration
+config = defaultConfiguration { destinationDirectory = "docs" }
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyll $ do
+main = hakyllWith config $ do
     match "images/*" $ do
         route idRoute
         compile copyFileCompiler
@@ -44,8 +46,6 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateBodyCompiler
 
-
---------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx =
     dateField "date" "%Y-%m-%d" `mappend`
