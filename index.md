@@ -8,3 +8,5 @@ Find me on the Internet:
 
 -   GitHub: [aji](https://github.com/aji)
 -   SoundCloud: [ajitek](https://soundcloud.com/ajitek)
+-   BlueSky: [aji.bsky.social](https://bsky.app/profile/aji.bsky.social)
+-   cohost: [aji](https://cohost.org/aji)
