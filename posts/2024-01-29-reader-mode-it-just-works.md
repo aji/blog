@@ -69,7 +69,7 @@ fix it? How broken is it actually?
 [github-prs]: https://github.com/mozilla/readability/pulls
 
 To Mozilla's credit, they, like all browser vendors, are up against some pretty
-steep odds! These days, most of the HTML on the internet is written with
+steep odds. These days, most of the HTML on the internet is written with
 desktop and mobile users in mind, and occasionally will also consider screen
 readers and dark modes. For everything else, you just have to make do with what
 you've got. A well known fact about standards is that their mere existence
@@ -112,14 +112,15 @@ try to make them good? How is this different from AMP, which for a brief time
 was everywhere even though people hated it? How is this different from the Open
 Graph protocol? How is this different from Sitemaps or WebP or Flexbox?
 
-The main difference? A standard won't really help. The web community finds
-itself in a situation which is all too familiar to software engineers: things
-are good *enough*, and the problems aren't a big deal. The only changes to
-reader modes that anyone feels are worth the time and energy are the small,
-incremental ones that gradually improve the situation, and widespread adoption
-of a standard is simply not one of those things. Ultimately, most of the people
-who would play nice with a standardized reader mode are already reciting the
-`<article>` and `<p>` incantations they got from Stack Overflow.
+The main difference? A standard won't help. Not that much, anyway. The web
+community finds itself in a situation which is all too familiar to software
+engineers: things are good *enough*, and the problems aren't a big deal. The
+only changes to reader modes that anyone feels are worth the time and energy
+are the small, incremental ones that gradually improve the situation, and
+widespread adoption of a standard is simply not one of those things.
+Ultimately, most of the people who would play nice with a standardized reader
+mode are already reciting the `<article>` and `<p>` incantations they got from
+Stack Overflow.
 
 Furthermore, for the small number of people that want a good reader mode
 experience for their website but can't make it work, a standard won't
