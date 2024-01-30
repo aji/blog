@@ -6,6 +6,5 @@ peer-to-peer technology, probably machine learning at some point, etc.
 
 Find me on the Internet:
 
-* Twitter: [ajixander](https://twitter.com/ajixander)
-* GitHub: [aji](https://github.com/aji)
-* SoundCloud: [ajitek](https://soundcloud.com/ajitek)
+-   GitHub: [aji](https://github.com/aji)
+-   SoundCloud: [ajitek](https://soundcloud.com/ajitek)

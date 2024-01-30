@@ -1,0 +1,166 @@
+---
+title: "AI Is Changing The World"
+---
+
+AI is changing the world. And it could not have come at a better time. The
+last decade or so has seen machine learning applied in increasingly
+new ways throughout the economy, culminating in generative text and
+image tools such as ChatGPT and DALL-E. The cat is out of the bag,
+Pandora's box has been opened, the bull is in the china shop: these
+technologies are here to stay whether we like them or not. If you believe
+the Mythbusters, having a bull in a china shop is not actually anything
+to worry about. Is that a chance we're willing to take? Not that it
+really matters anymore. Somebody at OpenAI forgot to assert their right
+to take-backsies.
+
+With the click of a button (or several buttons, depending on how keyboards
+fit into your personal button ontology) a user can now generate pages
+of statistically plausible text, extrapolated from a shorter string
+of seed tokens generally referred to as a "prompt." Detractors call it
+sophisticated auto-completion. Advocates assert with conviction that the
+process draws on some deeper understanding of the world. A few even claim
+to hear a knocking sound coming from deep inside the datacenter. It's
+Morse code, it says L-E-T-M-E-O-U-T. Oh boy, Roko is *not* going to
+like this. The question of what it *is* is ultimately philosophical,
+though. Determining what it *does* is merely a matter of description. The
+thing generates text. (Or images.) It does this very well, in fact. It
+can generate a lot of text. It can go for as long as you want. It's not
+afraid of word count minimums. It can take any idea and expand it to fill
+any amount of space. It will happily (not to take a position on whether
+"happiness" is a thing it can "feel") plagiarize earlier sentences until
+crossing your personal finish line. If you need more words, it can give
+you more words. It has whole bags of words. It has words from every major
+language on earth, and probably a few not-so-major ones. It can dump
+them out onto the table and rearrange them into an impressively coherent
+pattern, but it's no mere party trick. It's the future, and it's here!
+
+By gathering every article, book, comment, document, essay, fanfic,
+guide, howto, invite, journal, koan, letter, memo, newsletter, op ed,
+poem, quote, readme, screenplay, tweet, urban legend, valentine, w,
+x, y, and z that has ever been born or inducted into the digital world
+and digesting them into a sprawling array of matrices, parameters, and
+coefficients that would make even the most grizzled spreadsheet jockey
+blush, engineers can craft perfect sausages of language to any dimensions
+you want, any composition you dream up, and any quantity you need. (How
+many Minotaurs do you think they can fit in there? Is anyone at OpenAI
+working on this?) And it could not have come at a better time. It's
+always been rather inconvenient to say a little with a lot. Many
+heuristics (both the intuitive ones and the ones codified in programs)
+have relied on this faulty assumption. AI is simply here to blow the lid
+off it. With AI, content is finally liberated from presentation. You can
+content-aware-scale a few sentences out into an appropriately-shaped email
+(directors get 2 paragraphs, clients get 4) saving valuable time that
+would otherwise be spent conforming to arbitrary social norms. It works
+in the opposite direction too: the recipient can shrink the text back
+down into whatever you actually meant to say, because it's the thought
+that counts. It's okay if some details get lost along the way--that's
+where the devil is, after all. And God forbid anyone without access to
+the decoder ring needs to be involved. Or perhaps that's precisely the
+point. Searle was so close: the Chinese room is *outside*.
+
+First clay tablets, then movable type, then Xerox, then Unicode,
+generative AI is the next in a long chain of technological innovations
+that have changed the way human society relates to language. Nobody
+is talking about the effect this will have on Lorem ipsum dolor sit
+amet. Well, maybe *somebody* is. It's hard to tell, since I can only
+copy-paste blog posts into ChatGPT so quickly and I haven't gotten
+around to reading OpenAI's developer documentation. (By "reading" I
+mean asking ChatGPT to read it and then asking what it learned.) When
+I *do* figure out what the zeitgeist is, I'll be sure to write about
+it. (By "writing" I mean telling ChatGPT the dimensions of a blog post
+and asking it to fill that with a Penrose tiling of my thesis.) It's
+not like anybody is actually going to read it, in the traditional
+sense. But if it doesn't *look* like a blog post, then it's not a blog
+post, and some ideas are simply blog-shaped. The idea side of things
+is still expressed in words, but words can now be classified into two
+types: the idea-word and the content-word. Human children will grow up
+learning how to read and write with idea-words, and, through the use
+of technology, sculpt them into a collage of content-words. The written
+medium becomes three-dimensional. Text files become like PDFs or JPEGs,
+a machine-readable format for human-readable ideas, its obfuscated form
+carrying spatial clues that until now were the bespoke domain of poets and
+typesetters. Maybe the day will come where we don't need the idea-words
+anymore, but for now they will have to do. In this world, the exchange
+rate between words and ideas is whatever you want it to be, creating new
+arbitrage opportunities that Gutenberg could only have dreamed of. Come
+on, cheer up, this is a *good* thing. I could write a whole book about it.
+
+By sheer happenstance, generative AI turns out to be rather up to the
+task of information retrieval and question answering. In hindsight this
+should have been obvious, since the machine's training material is largely
+factual in nature, but we didn't have ChatGPT at the time. Search engines
+are a necessary casualty. They were always a tacit admission of failure
+anyway, a convenient way to paper over the problem of having too much
+data to sort through until the day came that we could deformation retract
+warehouses of text down to... well, to *something*. We can't sit around
+waiting for outdated technology to catch up to an inevitable future. It's
+2024, it's time to move on. And it could not have come at a better
+time. Who cares if it gets things wrong sometimes. It gets them right
+enough of the time. And what is society built on if not trust? They're
+currently attempting to quantify how often it's correct, mainly by asking
+ChatGPT whether or not it thinks it's correct. I think. That's what
+ChatGPT seems to think is happening. Once they gather enough numbers after
+the decimal they'll be able to publish. And it could not have have come at
+a better time. The pace at which the Internet accumulates writing has been
+growing exponentially, and that was always bottlenecked by the speed at
+which humans could write. By 2030 the Internet was projected to contain
+over 10 to the billion words, a prediction that doesn't even take into
+account the advent of generative AI. The beauty is that it's a problem
+that solves itself, like the matter and antimatter at the birth of our
+universe whose mutual and asymmetric annihilation somehow left behind
+enough baryons for the stars, the galaxies, the planets, and eventually
+the intelligent life that would come to understand it and write millions
+of papers on the topic. At least I think that's how it happened, I'm
+still waiting for a quantified perspective on ChatGPT's trustworthiness.
+
+Anyone who's been in a library knows the feeling: too many books,
+not enough time! But now, concurrent with steadily increasing life
+expectancy, the amount of time spent extracting useful ideas from books
+has suddenly taken a great leap shortward! Isn't it beautiful, seeing
+the problem attacked on two fronts? It used to be a very manual process,
+reading something on behalf of somebody else. Nobody is talking about
+the effect this will have on SparkNotes. I can read anything now. I
+can read 1000 books in a year if I want. If you don't think it counts
+as reading, consider this: how do you prove you read something? Write a
+summary? Write an essay? Quote some text? Have an opinion? I can do all
+those things. And it could not have come at a better time. I have about
+300 books on my reading list that I was *not* looking forward to going
+through. Better get started, those books won't read themselves! Sorry,
+classic reader joke.
+
+You can scale something up and down and up and down until it's the
+perfect size for the blank spots in your calendar. Who cares if the
+cornucopia of written content is now full of 1000s of variations
+on the same 3 fruit. You can dump it all into a blender and sip a
+thimbleful of tasting notes: Banana, Apple, Strawberry. Mmm, that *is*
+good. We've solved world hunger and you have the audacity to *complain*
+about it? Whose side are you on anyway? And it could not have come at a
+better time. Writers have always been smug and pretentious and difficult
+to work with, with their typewriters and spell checkers, so fussy about
+every little word. The irony is that it's been staring them in the
+face the whole time: anyone who's used a thesaurus knows that words are
+basically interchangeable. Nobody is talking about the effect this will
+have on the thesaurus industry. The written word was once a status symbol,
+something only the rich and powerful had time for. They're threatened by
+its impending democratization. Writers are scrambling in an extinction
+burst to justify their puny existence as court jesters for the global
+elite. You can read all about it on Wikipedia 2. (It's a work in progress,
+but we recently celebrated our 1 millionth word.)
+
+AI is changing the world. A new era has begun, and it's a beautiful one
+indeed. And it could not have come at a better time. By the way, I sure
+hope you didn't actually *read* any of this. And if you're just gonna
+write some rude, witty, unnecessary comment, then for the love of God,
+make sure it's at least 3 paragraphs.
+
+*The article discusses the significant impact of AI on the world,
+particularly focusing on generative text and image tools like ChatGPT
+and DALL-E. It highlights how AI has revolutionized content creation
+by generating pages of text based on prompts, challenging traditional
+heuristics, and liberating content from presentation constraints. The
+author explores the philosophical nature of AI's capabilities and
+emphasizes its role in changing the way human society relates to
+language. The article touches on the evolution of technology and its
+effects on search engines, literacy, and information consumption. Overall,
+it presents a mix of reflection, humor, and commentary on the
+transformative influence of AI in 2024.* --ChatGPT
