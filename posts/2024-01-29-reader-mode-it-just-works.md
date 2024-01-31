@@ -115,8 +115,11 @@ Furthermore, the idea seems pretty aligned with accessibility. So why does the
 implementation still feel like a hack? Why has nobody tried to standardize
 this? At this point it's clear that reader modes are here to stay, so why not
 try to make them good? How is this different from AMP, which for a brief time
-was everywhere even though people hated it? How is this different from the Open
-Graph protocol? How is this different from Sitemaps or WebP or Flexbox?
+was everywhere [even though people hated it][amp]? How is this different from
+the Open Graph protocol? How is this different from Sitemaps or WebP or
+Flexbox?
+
+[amp]: https://en.wikipedia.org/wiki/Accelerated_Mobile_Pages#Reception
 
 #### Anger
 
