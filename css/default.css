@@ -45,7 +45,6 @@ body {
 	body {
 		padding: 1px 2rem;
 		font-size: 16px;
-		text-align: justify;
 	}
 }
 
@@ -68,6 +67,11 @@ header {
 header > a,
 header > a:visited {
 	color: var(--heading-1);
+}
+
+article {
+	text-align: justify;
+	hyphens: auto;
 }
 
 section.header {
@@ -108,7 +112,7 @@ h2 { font-size: 120%; }
 h3 { font-size: 110%; }
 h4, h5, h6 { font-size: 100%; }
 
-img.banner { width: 100%; margin-bottom: 1rem; }
+img.banner { width: 100%; height: auto; margin-bottom: 1rem; }
 
 a { color: var(--link-normal); }
 a:visited { color: var(--link-visited); }

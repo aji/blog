@@ -8,7 +8,12 @@
     </section>
     <section class="body">
         $if(banner)$
-            <img class="banner" src="../images/$banner$" />
+            <img class="banner" src="../images/$banner$"
+              $if(banner-width)$
+              $if(banner-height)$
+              width="$banner-width$" height="$banner-height$"
+              $endif$
+              $endif$ />
         $endif$
         $body$
     </section>
