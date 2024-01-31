@@ -1,6 +1,6 @@
 ---
 title: "AI Is Changing The World"
-description: "And it could not have come at a better time."
+description: "And it could not have come at a better time"
 banner: "2024-01-23-ai-is-changing-the-world.png"
 banner-width: "1400"
 banner-height: "700"
