@@ -40,6 +40,8 @@ that work pretty well if your HTML is good."
 [mozilla2]: https://support.mozilla.org/en-US/questions/1140969
 [zumguy]: https://web.archive.org/web/20200719050912/http://zumguy.com/enabling-reading-mode-on-your-website/
 
+## Why isn't it standardized yet?
+
 After some digging I found [this excellent series of 4 articles by Daniel
 Aleksandersen from 2018][ctrl-blog] about features like Reader View that
 discusses their history, the failed attempts at standardization, an overview of
@@ -101,6 +103,8 @@ your hopes of capturing market share on content authors doing the right thing:
 if CNN looks good in every browser but yours, that's *your* problem, even if
 it's really CNN's fault.
 
+#### Denial
+
 And this is why reader modes are interesting to me. The incentives *are*
 aligned here. Browser vendors (with the possible exception of Google) want them
 to work well, users want them to work well, and, clearly, there are more than a
@@ -112,6 +116,8 @@ try to make them good? How is this different from AMP, which for a brief time
 was everywhere even though people hated it? How is this different from the Open
 Graph protocol? How is this different from Sitemaps or WebP or Flexbox?
 
+#### Anger
+
 The main difference? A standard won't help. Not that much, anyway. The web
 community finds itself in a situation which is all too familiar to software
 engineers: things are good *enough*, and the problems aren't a big deal. The
@@ -121,6 +127,8 @@ widespread adoption of a standard is simply not one of those things.
 Ultimately, most of the people who would play nice with a standardized reader
 mode are already reciting the `<article>` and `<p>` incantations they got from
 Stack Overflow.
+
+#### Bargaining
 
 Furthermore, for the small number of people that want a good reader mode
 experience for their website but can't make it work, a standard won't
@@ -132,6 +140,8 @@ more likely to get the `<table>` extraction for your page fixed by submitting
 an issue to a GitHub repo (or fixing it yourself, maybe) than by going through
 the process of having the standard amended in a way that everyone feels will
 fix all `<table>` extraction everywhere for all time.
+
+#### Depression
 
 Cynically, a standard could even make things worse. The whole point of a reader
 mode is to *reduce* clutter, and a standard would only provide a jumping-off
@@ -145,6 +155,8 @@ what they came for, with no ads, no links to other articles, no comments
 sections, no social media buttons. Imagine the HTML crimes they'd do to sneak
 them back in. Imagine the cat-and-mouse game that would ensue. Imagine the
 ways they'd meddle in the standardization process.
+
+#### Acceptance
 
 This is not to suggest that a lack of a standard is a *good* thing, or that
 it's a purposeful effort by browser vendors to thwart those who would ruin it
