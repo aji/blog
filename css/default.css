@@ -33,18 +33,19 @@ body {
 	padding: 1px 1rem;
 	margin: 0 auto;
 	border: 0px solid var(--border-1);
-	font-size: 18px;
+	font-size: 15px;
 	font-family: sans-serif;
 	line-height: 150%;
 	overflow-y: scroll;
 	min-height: 100vh;
 	color: var(--text-1);
-	text-align: justify;
 }
 
 @media (width > 40rem) {
 	body {
 		padding: 1px 2rem;
+		font-size: 16px;
+		text-align: justify;
 	}
 }
 
