@@ -1,5 +1,6 @@
 ---
 title: "AI Is Changing The World"
+description: "And it could not have come at a better time."
 ---
 
 AI is changing the world. And it could not have come at a better time. The

@@ -1,5 +1,7 @@
 ---
 title: "Reader Mode: It Just Works"
+description: "And maybe that's fine"
+banner: "2024-01-29-reader-mode-it-just-works.png"
 ---
 
 I'm the kind of internet user for whom the [Firefox Reader View

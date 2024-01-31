@@ -37,7 +37,7 @@ main = hakyllWith config $ do
             posts <- recentFirst =<< loadAll "posts/*"
             let indexCtx =
                     listField "posts" postCtx (return posts) `mappend`
-                    defaultContext
+                    bodyField "body"
 
             pandocCompiler
                 >>= loadAndApplyTemplate "templates/index.html"   indexCtx
@@ -49,4 +49,10 @@ main = hakyllWith config $ do
 postCtx :: Context String
 postCtx =
     dateField "date" "%Y-%m-%d" `mappend`
+    dateField "isodate" "%Y-%m-%d" `mappend`
+    globalContext
+
+globalContext :: Context String
+globalContext =
+    constField "root" "https://aji.github.io/blog/" `mappend`
     defaultContext

@@ -6,6 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>$if(title)$$title$ &mdash; $endif$aji's Blog</title>
         <link rel="stylesheet" href="/css/default.css" />
+
+        $if(title)$
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@ajixander" />
+          <meta name="og:type" content="article" />
+          <meta name="og:site_name" content="aji's Blog" />
+          <meta property="og:title" content="$title$" />
+        $endif$
+        $if(description)$
+          <meta name="description" content="$description$" />
+          <meta name="twitter:description" content="$description$" />
+          <meta property="og:description" content="$description$" />
+        $endif$
+        $if(banner)$
+          <meta name="twitter:image" content="$root$images/$banner$" />
+          <meta name="og:image" content="$root$images/$banner$" />
+        $endif$
+
+        $if(title)$
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "$title$",
+            "author": {
+              "@type": "Person",
+              "name": "aji"
+            },
+            $if(banner)$"image": "$root$images/$banner$",$endif$
+            $if(isodate)$"datePublished": "$isodate$",$endif$
+            $if(description)$"description": "$description$",$endif$
+            "isAccessibleForFree": "True"
+          }
+        </script>
+        $endif$
     </head>
     <body>
         <header><a href="/">aji's Blog</a>
