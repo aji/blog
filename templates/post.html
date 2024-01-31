@@ -1,12 +1,5 @@
 <article>
     <section class="header">
-        $date$
-        <h1>$title$</h1>
-        $if(description)$
-            <p>$description$</p>
-        $endif$
-    </section>
-    <section class="body">
         $if(banner)$
             <img class="banner" src="../images/$banner$"
               $if(banner-width)$
@@ -15,6 +8,13 @@
               $endif$
               $endif$ />
         $endif$
+        <div class="published">$date$</div>
+        <h1>$title$</h1>
+        $if(description)$
+            <p>$description$</p>
+        $endif$
+    </section>
+    <section class="body">
         $body$
     </section>
 </article>

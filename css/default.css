@@ -30,10 +30,10 @@ html {
 body {
 	background-color: var(--page);
 	max-width: 40rem;
-	padding: 1px 1rem;
 	margin: 0 auto;
 	border: 0px solid var(--border-1);
-	font-size: 15px;
+	padding: 1px 2rem;
+	font-size: 16px;
 	font-family: sans-serif;
 	line-height: 150%;
 	overflow-y: scroll;
@@ -41,27 +41,9 @@ body {
 	color: var(--text-1);
 }
 
-@media (width > 40rem) {
-	body {
-		padding: 1px 2rem;
-		font-size: 16px;
-	}
-}
-
-@media print {
-	body {
-		margin: 0;
-		padding: 1rem;
-		font-size: 10pt;
-		max-width: none;
-		border: 0;
-	}
-}
-
 header {
 	margin: 1rem auto;
 	padding: 0 0 1rem;
-	border-bottom: 2px solid var(--border-1);
 	font-weight: bold;
 }
 header > a,
@@ -80,8 +62,17 @@ section.header {
 	padding: 0 0 1rem;
 	color: var(--text-2);
 }
-section.header h1.title {
+section.header .banner {
+	width: 100%;
+	height: auto;
+	margin: 0;
+}
+section.header .published {
+	margin: 1.5rem 0 0.5rem;
+}
+section.header h1 {
 	color: var(--heading-1);
+	margin-top: 0;
 	margin-bottom: 0;
 }
 section.header p {
@@ -90,7 +81,7 @@ section.header p {
 }
 
 section.body {
-	padding: 2rem 0;
+	padding: 1rem 0;
 }
 
 hr {
@@ -111,8 +102,6 @@ h1 { font-size: 130%; }
 h2 { font-size: 120%; }
 h3 { font-size: 110%; }
 h4, h5, h6 { font-size: 100%; }
-
-img.banner { width: 100%; height: auto; margin-bottom: 1rem; }
 
 a { color: var(--link-normal); }
 a:visited { color: var(--link-visited); }
@@ -136,5 +125,22 @@ footer {
 	margin: 2rem 0 4rem;
 	padding: 1rem 0;
 	color: var(--text-2);
-	border-top: 2px solid var(--border-1);
+}
+
+@media (width < 40rem) {
+	/* mobile */
+	body {
+		padding: 1px 1rem;
+		font-size: 15px;
+	}
+}
+
+@media print {
+	body {
+		margin: 0;
+		padding: 1rem;
+		font-size: 10pt;
+		max-width: none;
+		border: 0;
+	}
 }
