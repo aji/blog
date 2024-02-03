@@ -2,6 +2,7 @@ html {
 	--page: #fdfdfd;
 	--text-1: #131313;
 	--text-2: #777777;
+	--text-3: #bfbfbf;
 	--border-1: #bdbdbd;
 	--heading-1: #931a0d;
 	--heading-2: #995d46;
@@ -19,6 +20,7 @@ html {
 		--page: #181818;
 		--text-1: #dfdfdf;
 		--text-2: #777777;
+		--text-3: #424242;
 		--border-1: #606060;
 		--heading-1: #ff747a;
 		--heading-2: #e69fa2;
@@ -125,6 +127,16 @@ footer {
 	margin: 2rem 0 4rem;
 	padding: 1rem 0;
 	color: var(--text-2);
+}
+
+footer .rights {
+	margin: 3rem 0 0;
+	color: var(--text-3);
+	font-size: 80%;
+}
+footer .rights a,
+footer .rights a:visited {
+	color: var(--text-3);
 }
 
 @media (width < 40rem) {
