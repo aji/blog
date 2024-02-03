@@ -1,0 +1,10 @@
+name: blog
+version: 0.1.0.0
+
+executable:
+  main: site.hs
+
+dependencies:
+- base
+- hakyll
+- time

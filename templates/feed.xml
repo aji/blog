@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
+  <id>tag:ajitek.net,2024:blog</id>
   <title>aji's Blog</title>
+  <updated>$isomtime$</updated>
+  <link rel="self" href="$root$/feed.xml" />
   <link href="$root$" />
   <author>
     <name>aji</name>
   </author>
   $for(posts)$
     <entry>
+      <id>tag:ajitek.net,2024:blog/$path$</id>
       <title>$title$</title>
       <link rel="alternate" type="text/html" href="$root$$url$" />
       <published>$isodate$T12:00:00Z</published>
-      <id>tag:ajitek.net,2024:blog/$path$</id>
+      <updated>$isomtime$</updated>
       <rights>
         This work (c) $year$ by Alex Iadicicco is licensed under CC BY-NC-SA 4.0.
         To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/

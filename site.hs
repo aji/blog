@@ -2,13 +2,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 import           Data.Monoid (mappend)
 import           Hakyll
+import           Data.Time.Clock (UTCTime, getCurrentTime)
+import           Data.Time.Format.ISO8601 (iso8601Show)
 
 config :: Configuration
 config = defaultConfiguration { destinationDirectory = "docs" }
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = hakyllWith config $ do
+main = getCurrentTime >>= site
+
+site :: UTCTime -> IO ()
+site start = hakyllWith config $ do
     match "images/*" $ do
         route idRoute
         compile copyFileCompiler
@@ -51,6 +56,7 @@ main = hakyllWith config $ do
             posts <- recentFirst =<< loadAllSnapshots "posts/*" "content"
             let feedCtx =
                     listField "posts" postCtx (return $ take 10 posts) `mappend`
+                    constField "isomtime" (iso8601Show start) `mappend`
                     constField "root" root
 
             makeItem ""
@@ -66,6 +72,7 @@ postCtx =
     dateField "date" "%Y-%m-%d" `mappend`
     dateField "isodate" "%Y-%m-%d" `mappend`
     dateField "year" "%Y" `mappend`
+    modificationTimeField "isomtime" "%Y-%m-%dT%H:%M:%S%z" `mappend`
     globalContext
 
 globalContext :: Context String
