@@ -2,9 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>tag:ajitek.net,2024:blog</id>
   <title>aji's Blog</title>
-  <updated>2024-02-03T07:37:29.865879701Z</updated>
+  <updated>2024-02-03T07:50:46.530263876Z</updated>
   <link rel="self" href="https://aji.github.io/blog/feed.xml" />
   <link href="https://aji.github.io/blog" />
+  <icon>https://aji.github.io/blog/images/icon.png</icon>
   <author>
     <name>aji</name>
   </author>
@@ -13,6 +14,9 @@
       <id>tag:ajitek.net,2024:blog/posts/2024-01-29-reader-mode-it-just-works.md</id>
       <title>Reader Mode: It Just Works</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-29-reader-mode-it-just-works.html" />
+      
+        <link rel="enclosure" type="image/png" href="https://aji.github.io/blog/images/2024-01-29-reader-mode-it-just-works.png" />
+      
       <published>2024-01-29T12:00:00Z</published>
       <updated>2024-01-31T22:42:40Z</updated>
       <rights>
@@ -164,6 +168,9 @@ works. It’ll be our little secret.</p>
       <id>tag:ajitek.net,2024:blog/posts/2024-01-23-ai-is-changing-the-world.md</id>
       <title>AI Is Changing The World</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-23-ai-is-changing-the-world.html" />
+      
+        <link rel="enclosure" type="image/png" href="https://aji.github.io/blog/images/2024-01-23-ai-is-changing-the-world.png" />
+      
       <published>2024-01-23T12:00:00Z</published>
       <updated>2024-01-31T23:37:19Z</updated>
       <rights>
