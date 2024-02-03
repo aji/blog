@@ -14,9 +14,6 @@
       <id>tag:ajitek.net,2024:blog/$path$</id>
       <title>$title$</title>
       <link rel="alternate" type="text/html" href="$root$$url$" />
-      $if(banner)$
-        <link rel="enclosure" type="image/png" href="$root$/images/$banner$" />
-      $endif$
       <published>$isodate$T12:00:00Z</published>
       <updated>$isomtime$</updated>
       <rights>
@@ -28,6 +25,9 @@
       $endif$
       <content type="xhtml" xml:lang="en" xml:base="$root$">
         <div xmlns="http://www.w3.org/1999/xhtml">
+          $if(banner)$
+            <img src="$root$/images/$banner$" />
+          $endif$
           $body$
         </div>
       </content>

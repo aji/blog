@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>tag:ajitek.net,2024:blog</id>
   <title>aji's Blog</title>
-  <updated>2024-02-03T07:50:46.530263876Z</updated>
+  <updated>2024-02-03T07:56:44.11478597Z</updated>
   <link rel="self" href="https://aji.github.io/blog/feed.xml" />
   <link href="https://aji.github.io/blog" />
   <icon>https://aji.github.io/blog/images/icon.png</icon>
@@ -14,9 +14,6 @@
       <id>tag:ajitek.net,2024:blog/posts/2024-01-29-reader-mode-it-just-works.md</id>
       <title>Reader Mode: It Just Works</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-29-reader-mode-it-just-works.html" />
-      
-        <link rel="enclosure" type="image/png" href="https://aji.github.io/blog/images/2024-01-29-reader-mode-it-just-works.png" />
-      
       <published>2024-01-29T12:00:00Z</published>
       <updated>2024-01-31T22:42:40Z</updated>
       <rights>
@@ -28,6 +25,9 @@
       
       <content type="xhtml" xml:lang="en" xml:base="https://aji.github.io/blog">
         <div xmlns="http://www.w3.org/1999/xhtml">
+          
+            <img src="https://aji.github.io/blog/images/2024-01-29-reader-mode-it-just-works.png" />
+          
           <p>I’m the kind of internet user for whom the <a href="https://support.mozilla.org/en-US/kb/firefox-reader-view-clutter-free-web-pages">Firefox Reader View
 feature</a> is only occasionally useful. Most mainstream browsers have
 something like it these days. I’m sure there are people out there who can’t
@@ -168,9 +168,6 @@ works. It’ll be our little secret.</p>
       <id>tag:ajitek.net,2024:blog/posts/2024-01-23-ai-is-changing-the-world.md</id>
       <title>AI Is Changing The World</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-23-ai-is-changing-the-world.html" />
-      
-        <link rel="enclosure" type="image/png" href="https://aji.github.io/blog/images/2024-01-23-ai-is-changing-the-world.png" />
-      
       <published>2024-01-23T12:00:00Z</published>
       <updated>2024-01-31T23:37:19Z</updated>
       <rights>
@@ -182,6 +179,9 @@ works. It’ll be our little secret.</p>
       
       <content type="xhtml" xml:lang="en" xml:base="https://aji.github.io/blog">
         <div xmlns="http://www.w3.org/1999/xhtml">
+          
+            <img src="https://aji.github.io/blog/images/2024-01-23-ai-is-changing-the-world.png" />
+          
           <p>AI is changing the world. And it could not have come at a better time. The
 last decade or so has seen machine learning applied in increasingly
 new ways throughout the economy, culminating in generative text and
