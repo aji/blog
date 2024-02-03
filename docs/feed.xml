@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>tag:ajitek.net,2024:blog</id>
   <title>aji's Blog</title>
-  <updated>2024-02-03T07:32:56.144871792Z</updated>
+  <updated>2024-02-03T07:37:29.865879701Z</updated>
   <link rel="self" href="https://aji.github.io/blog/feed.xml" />
   <link href="https://aji.github.io/blog" />
   <author>
@@ -14,7 +14,7 @@
       <title>Reader Mode: It Just Works</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-29-reader-mode-it-just-works.html" />
       <published>2024-01-29T12:00:00Z</published>
-      <updated>2024-01-31T22:42:40+0000</updated>
+      <updated>2024-01-31T22:42:40Z</updated>
       <rights>
         This work (c) 2024 by Alex Iadicicco is licensed under CC BY-NC-SA 4.0.
         To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -165,7 +165,7 @@ works. It’ll be our little secret.</p>
       <title>AI Is Changing The World</title>
       <link rel="alternate" type="text/html" href="https://aji.github.io/blog/posts/2024-01-23-ai-is-changing-the-world.html" />
       <published>2024-01-23T12:00:00Z</published>
-      <updated>2024-01-31T23:37:19+0000</updated>
+      <updated>2024-01-31T23:37:19Z</updated>
       <rights>
         This work (c) 2024 by Alex Iadicicco is licensed under CC BY-NC-SA 4.0.
         To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/

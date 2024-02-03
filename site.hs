@@ -72,7 +72,7 @@ postCtx =
     dateField "date" "%Y-%m-%d" `mappend`
     dateField "isodate" "%Y-%m-%d" `mappend`
     dateField "year" "%Y" `mappend`
-    modificationTimeField "isomtime" "%Y-%m-%dT%H:%M:%S%z" `mappend`
+    modificationTimeField "isomtime" "%Y-%m-%dT%H:%M:%SZ" `mappend`
     globalContext
 
 globalContext :: Context String
