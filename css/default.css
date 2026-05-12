@@ -183,6 +183,22 @@ blockquote p {
   margin: 0.5em 0;
 }
 
+figure {
+  margin: 1em;
+}
+figure img {
+  max-width: 100%;
+}
+figcaption {
+  color: var(--text-2);
+  font-size: 80%;
+}
+
+ul {
+  border-left: 2px transparent;
+  padding-left: 1em;
+}
+
 div.sourceCode {
   border: 1px solid var(--border-1);
   padding: 0.5rem;

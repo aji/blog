@@ -4,6 +4,7 @@ import           Data.Monoid (mappend)
 import           Hakyll
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format.ISO8601 (iso8601Show)
+import           Text.Pandoc.Options (HTMLMathMethod(..), WriterOptions(..))
 
 config :: Configuration
 config = defaultConfiguration { destinationDirectory = "docs" }
@@ -28,7 +29,7 @@ site start = hakyllWith config $ do
 
     match "posts/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ mathPandocCompiler
             >>= saveSnapshot "content"
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
@@ -36,7 +37,7 @@ site start = hakyllWith config $ do
 
     match "drafts/*" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ mathPandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
@@ -67,6 +68,12 @@ site start = hakyllWith config $ do
                 >>= loadAndApplyTemplate "templates/feed.xml" feedCtx
 
     match "templates/*" $ compile templateBodyCompiler
+
+mathPandocCompiler :: Compiler (Item String)
+mathPandocCompiler =
+    pandocCompilerWith
+        defaultHakyllReaderOptions
+        defaultHakyllWriterOptions { writerHTMLMathMethod = MathML }
 
 root :: String
 root = "https://aji.github.io/blog"

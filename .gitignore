@@ -3,5 +3,7 @@ _cache
 dist-newstyle
 drafts
 scratch
+assets
 *~
 *.swp
+.DS_Store
