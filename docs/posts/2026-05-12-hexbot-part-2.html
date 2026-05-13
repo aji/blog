@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hexbot Part 2: The Board and Our First Bot &mdash; aji's Blog</title>
+        <link rel="icon" type="image/x-icon" href="../images/icon.ico" />
+        <link rel="icon" type="image/png" href="../images/icon.png" />
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="alternate" type="application/atom+xml" href="feed.xml" />
+
+        
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@ajixander" />
+          <meta name="og:type" content="article" />
+          <meta name="og:site_name" content="aji's Blog" />
+          <meta property="og:title" content="Hexbot Part 2: The Board and Our First Bot" />
+        
+        
+          <meta name="description" content="Representing the board state and building a simple MCTS-based bot" />
+          <meta name="twitter:description" content="Representing the board state and building a simple MCTS-based bot" />
+          <meta property="og:description" content="Representing the board state and building a simple MCTS-based bot" />
+        
+        
+          <meta name="twitter:image" content="https://aji.github.io/blog/images/hex-banner.png" />
+          <meta name="og:image" content="https://aji.github.io/blog/images/hex-banner.png" />
+        
+
+        
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "Hexbot Part 2: The Board and Our First Bot",
+            "author": {
+              "@type": "Person",
+              "name": "aji"
+            },
+            "image": "https://aji.github.io/blog/images/hex-banner.png",
+            "datePublished": "2026-05-12",
+            "description": "Representing the board state and building a simple MCTS-based bot",
+            "isAccessibleForFree": "True"
+          }
+        </script>
+        
+    </head>
+    <body>
+        <header><a href="../">aji's Blog</a>
+        </header>
+
+        <main role="main">
+            <article>
+    <section class="header">
+        
+            <img class="banner" src="../images/hex-banner.png" width="1400" height="700" />
+        
+        <div class="published">2026-05-12</div>
+        <h1>Hexbot Part 2: The Board and Our First Bot</h1>
+        
+            <p>Representing the board state and building a simple MCTS-based bot</p>
+        
+    </section>
+    <section class="body">
+        <blockquote>
+<p>This is the second post in a planned series of posts about my foray into
+building a bot to play Hex. The focus of this post is on the bitboard
+implementation and an MCTS-based bot using it, as well as some analysis of the
+MCTS algorithm’s relative strength for different iteration counts.</p>
+<p><a href="./2026-05-10-hexbot-part-1.html">Hexbot Part 1: The 101 Unit</a><br />
+Hexbot Part 2: The Board and Our First Bot<br />
+… More on the way!</p>
+</blockquote>
+<h2 id="the-bitboard">The bitboard</h2>
+<p>The first step in implementing a bot for any board game is to have logic and
+data structures for the game itself. For Hex, as with any game, there are a
+variety of approaches that would work here, but for our purposes, and for MCTS
+especially, we want this code to be as lightweight as possible.</p>
+<p>To start, let’s consider how to represent a hexagonal grid on a computer in the
+first place. Luckily for us, the grid for Hex is a square that’s been skewed
+into a rhombus. We can simply represent the data in memory as a square and then
+skew or un-skew as appropriate, e.g. for displaying the board:</p>
+<pre class="text"><code>AA  AB  AC  AD  AE  AF  AG  AH  AI  AJ  AK
+  BA  BB  BC  BD  BE  BF  BG  BH  BI  BJ  BK
+    CA  CB  CC  CD  CE  CF  CG  CH  CI  CJ  CK
+      DA  DB  DC  DD  DE  DF  DG  DH  DI  DJ  DK
+        EA  EB  EC  ED  EE  EF  EG  EH  EI  EJ  EK
+          FA  FB  FC  FD  FE  FF  FG  FH  FI  FJ  FK
+            GA  GB  GC  GD  GE  GF  GG  GH  GI  GJ  GK
+              HA  HB  HC  HD  HE  HF  HG  HH  HI  HJ  HK
+                IA  IB  IC  ID  IE  IF  IG  IH  II  IJ  IK
+                  JA  JB  JC  JD  JE  JF  JG  JH  JI  JJ  JK
+                    KA  KB  KC  KD  KE  KF  KG  KH  KI  KJ  KK</code></pre>
+<p>We also define the red player as the one attempting to connect the left and
+right edges and the blue player as the one attempting to connect the top and
+bottom edges.</p>
+<p>Bitboards are one class of board representation that use bitmap layers to
+represent various features of the game. This works nicely for Hex because
+each of the 121 cells of an 11x11 board can be in one of 3 states. We’ll use
+two <code>u128</code>s, one for the red pieces and one for the blue pieces:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Copy</span><span class="op">,</span> <span class="bu">Clone</span><span class="at">)]</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Bitboard <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> red<span class="op">:</span> <span class="dt">u128</span><span class="op">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> blue<span class="op">:</span> <span class="dt">u128</span><span class="op">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>With some bits left over, we can also choose one of the unused bits to represent
+the player whose turn it is to move:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> NEXT_MOVE<span class="op">:</span> <span class="dt">u128</span> <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> <span class="dv">127</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> next_move(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> Player <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> <span class="kw">self</span><span class="op">.</span>red <span class="op">&amp;</span> NEXT_MOVE <span class="op">!=</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cn">true</span> <span class="op">=&gt;</span> <span class="pp">Player::</span>Red<span class="op">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">false</span> <span class="op">=&gt;</span> <span class="pp">Player::</span>Blue<span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This struct is only 32 bytes, making it very cheap to copy around, and we can
+even derive a <code>Copy</code> impl for it. With this representation, the 121 least
+significant bits of <code>red</code> represent cells containing a red piece, and likewise
+for <code>blue</code>. (Strictly speaking it’s possible for both planes to have a 1 in the
+same position, but we’ll simply assume this never happens.) A function for
+mapping a row and column to a cell on the board is rather simple:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> rc_mask(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> r<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> c<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> <span class="dt">u128</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span> <span class="op">&lt;&lt;</span> (<span class="dv">120</span> <span class="op">-</span> r <span class="op">*</span> <span class="dv">11</span> <span class="op">-</span> c)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> rc(<span class="op">&amp;</span><span class="kw">self</span><span class="op">,</span> r<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> c<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span>Player<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> mask <span class="op">=</span> <span class="kw">self</span><span class="op">.</span>rc_mask(r<span class="op">,</span> c)<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> is_red <span class="op">=</span> (<span class="kw">self</span><span class="op">.</span>red <span class="op">&amp;</span> mask) <span class="op">!=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> is_blue <span class="op">=</span> (<span class="kw">self</span><span class="op">.</span>blue <span class="op">&amp;</span> mask) <span class="op">!=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> (is_red<span class="op">,</span> is_blue) <span class="op">{</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        (<span class="cn">true</span><span class="op">,</span> _) <span class="op">=&gt;</span> <span class="cn">Some</span>(<span class="pp">Player::</span>Red)<span class="op">,</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        (_<span class="op">,</span> <span class="cn">true</span>) <span class="op">=&gt;</span> <span class="cn">Some</span>(<span class="pp">Player::</span>Blue)<span class="op">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=&gt;</span> <span class="cn">None</span><span class="op">,</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We can set cells and do other basic manipulations in a similar manner, and
+anyone familiar with bit manipulation should feel quite comfortable with the
+ideas expressed so far. Queries such as calculating the number of available
+moves should also be fairly obvious at this point (look up <code>popcount</code> if you’re
+stuck).</p>
+<p>The more interesting problem in front of us is how to check whether the game is
+over, i.e. which player has connected the two edges. This brings us to another
+strength of bitboards: we can represent a translated board state using bit
+manipulation. In our case, we want to be able to translate the board by one
+cell in each of the 6 directions. The basic premise for any given direction
+is to use a mask to select the bits that will move then use a bit shift to move
+them to their new locations. The reason this works is because the bit offset
+between the cell at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(r,c)</annotation></semantics></math> and the cell at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>+</mo><mi>d</mi><mi>r</mi><mo>,</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi>c</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(r+dr,c+dc)</annotation></semantics></math> is the same for all
+such pairs of cells, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>r</mi><mo>×</mo><mn>11</mn><mo>+</mo><mi>d</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">dr\times 11 + dc</annotation></semantics></math>.</p>
+<p>To check whether a player has connected their edges, we start with the cells
+on one edge, traverse the graph of adjacent cells of their color, then check
+if the traversal reached any cells on the opposite edge. The function that
+implements the graph traversal on bit sets is called <code>bb_fill</code> by analogy with
+flood filling:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> bb_fill(start<span class="op">:</span> <span class="dt">u128</span><span class="op">,</span> traversable<span class="op">:</span> <span class="dt">u128</span>) <span class="op">-&gt;</span> <span class="dt">u128</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> <span class="kw">mut</span> cur <span class="op">=</span> start <span class="op">&amp;</span> traversable<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">loop</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> <span class="kw">mut</span> next <span class="op">=</span> cur<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ0_KEEP) <span class="op">&gt;&gt;</span> ADJ0_SHR<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ1_KEEP) <span class="op">&gt;&gt;</span> ADJ1_SHR<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ2_KEEP) <span class="op">&gt;&gt;</span> ADJ2_SHR<span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ3_KEEP) <span class="op">&lt;&lt;</span> ADJ3_SHL<span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ4_KEEP) <span class="op">&lt;&lt;</span> ADJ4_SHL<span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        next <span class="op">|=</span> (cur <span class="op">&amp;</span> ADJ5_KEEP) <span class="op">&lt;&lt;</span> ADJ5_SHL<span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        next <span class="op">&amp;=</span> traversable<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> next <span class="op">==</span> cur <span class="op">{</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> cur<span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        cur <span class="op">=</span> next<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Where <code>ADJn_KEEP</code> and <code>ADJn_SHd</code> are masks and offsets for translations as
+described above. <code>cur</code> stores the set of currently reachable cells, and the loop
+body translates this set in all 6 directions and masks it with <code>traversable</code> to
+calculate the new set of reachable cells. This process is repeated until no new
+cells are added to <code>cur</code> and returns the full set of cells that are reachable
+from <code>start</code> through <code>traversable</code>. With this function, checking if a player has
+won is fairly straightforward:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> RED_START <span class="op">=</span> <span class="op">...;</span> <span class="co">// left edge bits</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> RED_END <span class="op">=</span> <span class="op">...;</span> <span class="co">// right edge bits</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> BLUE_START <span class="op">=</span> <span class="op">...;</span> <span class="co">// top edge bits</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> BLUE_END <span class="op">=</span> <span class="op">...;</span> <span class="co">// bottom edge bits</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> win(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">Option</span><span class="op">&lt;</span>Player<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> r <span class="op">=</span> bb_fill(RED_START<span class="op">,</span> <span class="kw">self</span><span class="op">.</span>red) <span class="op">&amp;</span> RED_END<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> b <span class="op">=</span> bb_fill(BLUE_START<span class="op">,</span> <span class="kw">self</span><span class="op">.</span>blue) <span class="op">&amp;</span> BLUE_END<span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> (r <span class="op">!=</span> <span class="dv">0</span><span class="op">,</span> b <span class="op">!=</span> <span class="dv">0</span>) <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        (<span class="cn">true</span><span class="op">,</span> _) <span class="op">=&gt;</span> <span class="cn">Some</span>(<span class="pp">Player::</span>Red)<span class="op">,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        (_<span class="op">,</span> <span class="cn">true</span>) <span class="op">=&gt;</span> <span class="cn">Some</span>(<span class="pp">Player::</span>Blue)<span class="op">,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=&gt;</span> <span class="cn">None</span><span class="op">,</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>And for a basic Hex board, that’s really all there is to it! Bitboards are still
+used for games with much more complex rules (I’ve even
+<a href="https://github.com/aji/khet-table/blob/main/src/bb.rs">written one for Khet</a>), but the simplicity of Hex works
+tremendously in our favor and makes an efficient bitboard possible with very
+little code.</p>
+<p>The full code for the bitboard module is <a href="https://github.com/aji/hex-table/blob/main/src/bb.rs">on GitHub</a>. (The actual
+code differs from the code in this post in a number of more or less trivial
+ways, such as “black and white” instead of “red and blue” and <code>bool</code>
+instead of <code>Player</code>, but the basic idea is the same.)</p>
+<h2 id="monte-carlo-tree-search">Monte Carlo tree search</h2>
+<p>As discussed in <a href="./2026-05-10-hexbot-part-1.html">part 1</a>, a basic MCTS requires very little
+domain-specific code beyond what have in our bitboard, i.e. a way to enumerate
+valid moves and check if the game has ended. Described briefly, the algorithm
+is as follows:</p>
+<blockquote>
+<p>An MCTS search tree contains a node for each visited state, where the node’s
+children represent states reachable by making a valid move from that state.
+The edges from state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> track various statistics:</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">N(s,a) =</annotation></semantics></math> the number of times <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(s, a)</annotation></semantics></math> has been traversed during the search.</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">V(s,a) =</annotation></semantics></math> the total value of actions in the subtree rooted at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>.</li>
+</ul>
+<p>Each iteration of an MCTS search proceeds as follows:</p>
+<ol type="1">
+<li><p><strong>Select.</strong> Starting from the root, descend the move tree until hitting a
+node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> which hasn’t been seen yet. From a node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>, choose the child node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+which maximizes a function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">t</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{select}(s, a)</annotation></semantics></math>. One popular choice is called
+UCT:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">U</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">T</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>+</mo><mi>C</mi><msqrt><mfrac><mrow><mrow><mi mathvariant="normal">ln</mi><mo>⁡</mo></mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></msqrt></mrow><annotation encoding="application/x-tex">\mathrm{UCT}(s, a) = \frac{V(s, a)}{N(s, a)} + C \sqrt{\frac{\ln N(s)}{N(s, a)}}</annotation></semantics></math></p></li>
+<li><p><strong>Expand.</strong> Evaluate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> with a <em>rollout</em>, playing random moves until the
+game ends. The winner determines the value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math> which will be used in the next
+step.</p></li>
+<li><p><strong>Backpropagate.</strong> Returning to the root of the tree, update
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">V(s,a) = V(s,a) + v</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N(s,a) = N(s,a) + 1</annotation></semantics></math>, altering <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+as appropriate depending on whose turn it is to play from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>.</p></li>
+</ol>
+<p>Once enough iterations have been performed, the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> that maximizes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">t</mi></mrow><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\mathrm{root},a)</annotation></semantics></math> is played.</p>
+</blockquote>
+<p>For a more in-depth explanation of MCTS, there are a variety of helpful
+resources online and I won’t try to outdo them here. The
+<a href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search">Wikipedia article</a> and <a href="https://www.chessprogramming.org/Monte-Carlo_Tree_Search">Chess Programming Wiki article</a>
+provide a good starting point for more information.</p>
+<p>The baseline MCTS implementation used <a href="https://github.com/aji/hex-table/blob/main/src/mcts.rs">in the code</a> more or less
+follows the algorithm described above, but with one important optimization
+which is worth pointing out. A naive rollout would play randomly and check the
+win condition, but for Hex we can make a much faster and much more efficient
+approximation, once again owing to the simplicity of Hex. We know that every
+additional move selects an unoccupied cell, and that a completely filled board
+is guaranteed to be a terminal state. Thus, in a single step, we can perform an
+MCTS rollout by assigning the empty cells randomly and checking who has won:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> mcts_rollout(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> Player <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> empty <span class="op">=</span> <span class="kw">self</span><span class="op">.</span>empty_bits()<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> mask <span class="op">=</span> <span class="pp">rand::random::</span><span class="op">&lt;</span><span class="dt">u128</span><span class="op">&gt;</span>()<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> red <span class="op">=</span> <span class="kw">self</span><span class="op">.</span>red <span class="op">|</span> (mask <span class="op">&amp;</span> empty)<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> bb_fill(RED_START<span class="op">,</span> red) <span class="op">&amp;</span> RED_END <span class="op">!=</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cn">true</span> <span class="op">=&gt;</span> <span class="pp">Player::</span>Red<span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cn">false</span> <span class="op">=&gt;</span> <span class="pp">Player::</span>Blue<span class="op">,</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>This code assigns a random subset of empty cells to red and checks if this is a
+winning placement of red cells. If not, its complement must be a winning
+placement of blue cells. Note that this is not <em>strictly</em> correct, since it
+will likely result in too many or too few cells being assigned to red. It’s
+equvialent to making random moves in a game where players flip a coin to decide who plays next.
+However, this difference does not significantly reduce the effectiveness of
+MCTS, and the amount of computation saved is well worth it. (An experiment
+worth doing would be to compare the relative strength of “proper” rollouts, but
+I haven’t taken the time to do this.)</p>
+<h2 id="measuring-the-relative-strength-of-mcts">Measuring the relative strength of MCTS</h2>
+<p>An MCTS search can be stopped at any time for any reason and return a result.
+This lets us use <em>rollout count</em> (i.e. iteration count) as a way of configuring
+or measuring the “strength” of an MCTS search. In practice, such as when playing
+with a clock, the decision of how much computation to spend per move becomes an
+important strategic one, but a fixed rollout count per move works well as a
+simple reference point.</p>
+<p>What we would like is to model the probability that an MCTS playing as red with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> rollouts wins against an MCTS playing as blue with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> rollouts. A simple
+model is to use logistic regression with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi><mo>−</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">\log n - \log m</annotation></semantics></math> as the independent
+variable. This is essentially the same idea as the Elo rating system, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">\log n</annotation></semantics></math> plays the role of the rating. Logistic regression lets us calibrate
+our rating system so we can turn rollout count ratios into win probabilities.
+The choice of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">\log n</annotation></semantics></math> instead of simply <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> or some other function of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> is
+motivated by two important assumptions: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">\log n</annotation></semantics></math> correlates with the average
+depth of the search tree, and the depth of the search tree correlates with
+strength. An effect of this assumption is that only the <em>ratio</em> of computational
+effort matters: thinking 20x as long is assumed to be equally strong no matter
+the absolute amount of computational effort invested.</p>
+<p>By generating pairs <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(n, m)</annotation></semantics></math> (sampled so <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">\log n</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">\log m</annotation></semantics></math> are uniform and
+i.i.d.) and running games, we can generate a dataset of outcomes and perform
+logistic regression to calibrate our rating system. Something like the following
+turns out to be a decent predictor:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> p_red_win(red_rollouts<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> blue_rollouts<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> <span class="dt">f64</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> red_rank <span class="op">=</span> (red_rollouts <span class="kw">as</span> <span class="dt">f64</span>)<span class="op">.</span>log10()<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> blue_rank <span class="op">=</span> (blue_rollouts <span class="kw">as</span> <span class="dt">f64</span>)<span class="op">.</span>log10()<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> x <span class="op">=</span> red_rank <span class="op">-</span> blue_rank<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">0.3</span> <span class="op">+</span> <span class="dv">1.8</span> <span class="op">*</span> x)<span class="op">.</span>sigmoid()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> sigmoid(x<span class="op">:</span> <span class="dt">f64</span>) <span class="op">-&gt;</span> <span class="dt">f64</span> <span class="op">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1.0</span> <span class="op">/</span> (<span class="dv">1.0</span> <span class="op">+</span> (<span class="op">-</span>x)<span class="op">.</span>exp())</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>(The mathematically inclined will notice that I’ve got some terms with an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">e</mi><mi mathvariant="normal">x</mi><mi mathvariant="normal">p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>m</mi><mo>−</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mi>n</mi></mrow><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{exp}({\log m - \log n})</annotation></semantics></math> shape here meaning we can simplify to a
+ratio of powers of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> but I’ll leave that as an exercise.)</p>
+<p>The <a href="https://github.com/aji/hex-table/blob/main/src/bin/mcts.rs">code</a> and <a href="https://github.com/aji/hex-table/blob/main/notebooks/skill.ipynb">notebook</a> for this
+analysis are on GitHub.</p>
+<h2 id="up-next">Up next</h2>
+<p>In the next post, I’ll talk about how we can use an AlphaZero-style neural
+network to significantly improve the effectiveness of MCTS.</p>
+    </section>
+</article>
+
+<footer>
+    <a href="../">&larr; Index</a>
+    <div class="rights">
+        This work &copy; 2026 by Alex Iadicicco is licensed under
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+            CC BY-NC-SA 4.0
+        </a>
+    </div>
+</footer>
+
+        </main>
+    </body>
+</html>

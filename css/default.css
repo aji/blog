@@ -199,22 +199,22 @@ ul {
   padding-left: 1em;
 }
 
-div.sourceCode {
+div.sourceCode, pre.text {
   border: 1px solid var(--border-1);
   padding: 0.5rem;
   overflow-x: auto;
 }
-pre.sourceCode {
+pre.sourceCode, pre.text {
   margin: 0;
   font-family: monospace;
   font-size: 14px;
   line-height: 16px;
 }
 
-div.sourceCode {
+div.sourceCode, pre.text {
   background-color: #ffffff;
 }
-pre.sourceCode {
+pre.sourceCode, pre.text {
   color: #000;
 }
 .sourceCode .kw,
@@ -234,10 +234,10 @@ pre.sourceCode {
 }
 
 @media (prefers-color-scheme: dark) {
-  div.sourceCode {
+  div.sourceCode, pre.text {
     background-color: #111;
   }
-  pre.sourceCode {
+  pre.sourceCode, pre.text {
     color: #ccc;
   }
   .sourceCode .kw,
@@ -263,7 +263,7 @@ pre.sourceCode {
     padding: 1px 1rem;
     font-size: 15px;
   }
-  pre.sourceCode {
+  pre.sourceCode, pre.text {
     font-size: 12px;
     line-height: 12px;
   }
