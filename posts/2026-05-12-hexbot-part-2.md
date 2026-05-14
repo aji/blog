@@ -13,6 +13,7 @@ banner-height: "700"
 >
 > [Hexbot Part 1: The 101 Unit][part-1]  
 > Hexbot Part 2: The Board and Our First Bot  
+> [Hexbot Part 3: Using Neural Networks][part-3]  
 > ... More on the way!
 
 ## The bitboard
@@ -193,7 +194,7 @@ is as follows:
 > 1. **Select.** Starting from the root, descend the move tree until hitting a
 > node $L$ which hasn't been seen yet. From a node $s$, choose the child node $a$
 > which maximizes a function $\mathrm{select}(s, a)$. One popular choice is called
-> UCT:
+> Upper Confidence on Trees (UCT):
 >
 >     $$\mathrm{UCT}(s, a) = \frac{V(s, a)}{N(s, a)} + C \sqrt{\frac{\ln N(s)}{N(s, a)}}$$
 > 
@@ -293,10 +294,11 @@ analysis are on GitHub.
 
 ## Up next
 
-In the next post, I'll talk about how we can use an AlphaZero-style neural
-network to significantly improve the effectiveness of MCTS.
+In [the next post][part-3], I'll talk about how we can use an AlphaZero-style
+neural network to significantly improve the effectiveness of MCTS.
 
 [part-1]: ./2026-05-10-hexbot-part-1.html
+[part-3]: ./2026-05-13-hexbot-part-3.html
 [github-khet-bb]: https://github.com/aji/khet-table/blob/main/src/bb.rs
 [github-bb]: https://github.com/aji/hex-table/blob/main/src/bb.rs
 [github-mcts]: https://github.com/aji/hex-table/blob/main/src/mcts.rs

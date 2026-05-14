@@ -69,6 +69,7 @@ implementation and an MCTS-based bot using it, as well as some analysis of the
 MCTS algorithm’s relative strength for different iteration counts.</p>
 <p><a href="./2026-05-10-hexbot-part-1.html">Hexbot Part 1: The 101 Unit</a><br />
 Hexbot Part 2: The Board and Our First Bot<br />
+<a href="./2026-05-13-hexbot-part-3.html">Hexbot Part 3: Using Neural Networks</a><br />
 … More on the way!</p>
 </blockquote>
 <h2 id="the-bitboard">The bitboard</h2>
@@ -217,7 +218,7 @@ The edges from state <math display="inline" xmlns="http://www.w3.org/1998/Math/M
 <li><p><strong>Select.</strong> Starting from the root, descend the move tree until hitting a
 node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> which hasn’t been seen yet. From a node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>, choose the child node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
 which maximizes a function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">t</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{select}(s, a)</annotation></semantics></math>. One popular choice is called
-UCT:</p>
+Upper Confidence on Trees (UCT):</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">U</mi><mi mathvariant="normal">C</mi><mi mathvariant="normal">T</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>+</mo><mi>C</mi><msqrt><mfrac><mrow><mrow><mi mathvariant="normal">ln</mi><mo>⁡</mo></mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></msqrt></mrow><annotation encoding="application/x-tex">\mathrm{UCT}(s, a) = \frac{V(s, a)}{N(s, a)} + C \sqrt{\frac{\ln N(s)}{N(s, a)}}</annotation></semantics></math></p></li>
 <li><p><strong>Expand.</strong> Evaluate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> with a <em>rollout</em>, playing random moves until the
 game ends. The winner determines the value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math> which will be used in the next
@@ -298,8 +299,8 @@ ratio of powers of <math display="inline" xmlns="http://www.w3.org/1998/Math/Mat
 <p>The <a href="https://github.com/aji/hex-table/blob/main/src/bin/mcts.rs">code</a> and <a href="https://github.com/aji/hex-table/blob/main/notebooks/skill.ipynb">notebook</a> for this
 analysis are on GitHub.</p>
 <h2 id="up-next">Up next</h2>
-<p>In the next post, I’ll talk about how we can use an AlphaZero-style neural
-network to significantly improve the effectiveness of MCTS.</p>
+<p>In <a href="./2026-05-13-hexbot-part-3.html">the next post</a>, I’ll talk about how we can use an AlphaZero-style
+neural network to significantly improve the effectiveness of MCTS.</p>
     </section>
 </article>
 

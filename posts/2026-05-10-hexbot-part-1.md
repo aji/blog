@@ -12,6 +12,7 @@ banner-height: "700"
 >
 > Hexbot Part 1: The 101 Unit  
 > [Hexbot Part 2: The Board and Our First Bot][part-2]  
+> [Hexbot Part 3: Using Neural Networks][part-3]  
 > ... More on the way!
 
 I've been vaguely aware of Hex for years, but didn't really *discover* it until
@@ -73,7 +74,7 @@ Our ultimate goal will be to build a bot similar to AlphaZero, an MCTS-based
 search algorithm augmented by a neural network trained on self-play. Owing to
 the popularity of Hex there are already plenty of *very* strong bots out there,
 including prior art for this exact idea: [KataHex][katahex], a fork of KataGo,
-is a popular AlphaZero-style bot for hex. But retracing those steps is
+is a popular AlphaZero-style bot for Hex. But retracing those steps is
 educational and fun, and what are board games about if not fun. The resulting
 implementation is small, hackable, and surprisingly strong.
 
@@ -148,6 +149,7 @@ In [the next post][part-2], I'll be covering the board representation and go
 more in depth on the baseline MCTS implementation.
 
 [part-2]: ./2026-05-12-hexbot-part-2.html
+[part-3]: ./2026-05-13-hexbot-part-3.html
 [katahex]: https://www.hexwiki.net/index.php/KataHex
 [khet-table]: https://github.com/aji/khet-table
 [mathworld]: https://mathworld.wolfram.com/GameofHex.html

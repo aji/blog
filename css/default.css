@@ -39,7 +39,7 @@ body {
   padding: 1px 2rem;
   font-size: 16px;
   font-family: sans-serif;
-  line-height: 150%;
+  line-height: 170%;
   overflow-y: scroll;
   min-height: 100vh;
   color: var(--text-1);
@@ -143,12 +143,26 @@ a.footnote-ref sup::before {
 a.footnote-ref sup::after {
   content: "]";
 }
+a.footnote-ref, a.footnote-ref:visited {
+  text-decoration: none;
+  color: var(--text-3);
+}
+a.footnote-ref:hover {
+  text-decoration: underline;
+}
 a.footnote-ref sup {
   vertical-align: baseline;
   font-size: 100%;
 }
 
+section.footnotes {
+  font-size: 80%;
+  color: var(--text-2);
+  line-height: 170%;
+  margin-top: 2rem;
+}
 section.footnotes ol {
+  margin-top: 1rem;
   padding-left: 2rem;
 }
 
@@ -176,15 +190,15 @@ footer .rights a:visited {
 blockquote {
   color: var(--text-2);
   border-left: 2px solid var(--border-1);
-  margin: 1em 1em 1em 0;
-  padding-left: 1em;
+  margin: 1rem 1rem 1rem 0;
+  padding-left: 1rem;
 }
 blockquote p {
-  margin: 0.5em 0;
+  margin: 0.5rem 0;
 }
 
 figure {
-  margin: 1em;
+  margin: 1rem;
 }
 figure img {
   max-width: 100%;
@@ -192,11 +206,12 @@ figure img {
 figcaption {
   color: var(--text-2);
   font-size: 80%;
+  line-height: 170%;
 }
 
-ul {
+ul, ol {
   border-left: 2px transparent;
-  padding-left: 1em;
+  padding-left: 1rem;
 }
 
 div.sourceCode, pre.text {
@@ -208,7 +223,7 @@ pre.sourceCode, pre.text {
   margin: 0;
   font-family: monospace;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 18px;
 }
 
 div.sourceCode, pre.text {
@@ -265,7 +280,7 @@ pre.sourceCode, pre.text {
   }
   pre.sourceCode, pre.text {
     font-size: 12px;
-    line-height: 12px;
+    line-height: 14px;
   }
 }
 
