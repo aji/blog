@@ -6,7 +6,7 @@ banner-width: "1400"
 banner-height: "700"
 ---
 
-> This is the second post in a planned series of posts about my foray into
+> This is the second post in a series of posts about my foray into
 > building a bot to play Hex. The focus of this post is on the bitboard
 > implementation and an MCTS-based bot using it, as well as some analysis of the
 > MCTS algorithm's relative strength for different iteration counts.
@@ -14,7 +14,7 @@ banner-height: "700"
 > [Hexbot Part 1: The 101 Unit][part-1]  
 > Hexbot Part 2: The Board and Our First Bot  
 > [Hexbot Part 3: Using Neural Networks][part-3]  
-> ... More on the way!
+> [Hexbot Part 4: Did It Work?][part-4]
 
 ## The bitboard
 
@@ -299,6 +299,7 @@ neural network to significantly improve the effectiveness of MCTS.
 
 [part-1]: ./2026-05-10-hexbot-part-1.html
 [part-3]: ./2026-05-13-hexbot-part-3.html
+[part-4]: ./2026-05-15-hexbot-part-4.html
 [github-khet-bb]: https://github.com/aji/khet-table/blob/main/src/bb.rs
 [github-bb]: https://github.com/aji/hex-table/blob/main/src/bb.rs
 [github-mcts]: https://github.com/aji/hex-table/blob/main/src/mcts.rs

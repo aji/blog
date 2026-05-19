@@ -6,14 +6,14 @@ banner-width: "1400"
 banner-height: "700"
 ---
 
-> This is the first post in a planned series of posts about my foray into
+> This is the first post in a series of posts about my foray into
 > building a bot to play Hex. The focus of this post is on Hex itself and board
 > game algorithms more generally.
 >
 > Hexbot Part 1: The 101 Unit  
 > [Hexbot Part 2: The Board and Our First Bot][part-2]  
 > [Hexbot Part 3: Using Neural Networks][part-3]  
-> ... More on the way!
+> [Hexbot Part 4: Did It Work?][part-4]
 
 I've been vaguely aware of Hex for years, but didn't really *discover* it until
 playing it in *Clubhouse Games: 51 Worldwide Classics* for Nintendo Switch. I
@@ -150,6 +150,7 @@ more in depth on the baseline MCTS implementation.
 
 [part-2]: ./2026-05-12-hexbot-part-2.html
 [part-3]: ./2026-05-13-hexbot-part-3.html
+[part-4]: ./2026-05-15-hexbot-part-4.html
 [katahex]: https://www.hexwiki.net/index.php/KataHex
 [khet-table]: https://github.com/aji/khet-table
 [mathworld]: https://mathworld.wolfram.com/GameofHex.html

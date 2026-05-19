@@ -6,7 +6,7 @@ banner-width: "1400"
 banner-height: "700"
 ---
 
-> This is the second post in a planned series of posts about my foray into
+> This is the third post in a series of posts about my foray into
 > building a bot to play Hex. The focus of this post is on how to augment MCTS
 > with a neural network, and in particular the AlphaZero-style strategy for
 > doing so.
@@ -14,7 +14,7 @@ banner-height: "700"
 > [Hexbot Part 1: The 101 Unit][part-1]  
 > [Hexbot Part 2: The Board and Our First Bot][part-2]  
 > Hexbot Part 3: Using Neural Networks  
-> ... More on the way!
+> [Hexbot Part 4: Did It Work?][part-4]
 
 ## Improving MCTS
 
@@ -237,10 +237,12 @@ model configuration:
 
 ## Up next
 
-In the next post, I'll explain how to decide if the work we've done is any good.
+In the [next post][part-4], I'll explain how to decide if the work we've done is
+any good.
 
 [part-1]: ./2026-05-10-hexbot-part-1.html
 [part-2]: ./2026-05-12-hexbot-part-2.html
+[part-4]: ./2026-05-15-hexbot-part-4.html
 [az-pdf]: https://arxiv.org/pdf/1712.01815
 [agz-pdf]: https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf
 [burn]: https://burn.dev/
