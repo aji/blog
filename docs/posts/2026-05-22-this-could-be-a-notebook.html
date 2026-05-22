@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>This Could Be a Notebook &mdash; aji's Blog</title>
+        <link rel="icon" type="image/x-icon" href="../images/icon.ico" />
+        <link rel="icon" type="image/png" href="../images/icon.png" />
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="alternate" type="application/atom+xml" href="feed.xml" />
+
+        
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@ajixander" />
+          <meta name="og:type" content="article" />
+          <meta name="og:site_name" content="aji's Blog" />
+          <meta property="og:title" content="This Could Be a Notebook" />
+        
+        
+          <meta name="description" content="Jupyter notebooks are a cool format, but could be cooler" />
+          <meta name="twitter:description" content="Jupyter notebooks are a cool format, but could be cooler" />
+          <meta property="og:description" content="Jupyter notebooks are a cool format, but could be cooler" />
+        
+        
+
+        
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": "This Could Be a Notebook",
+            "author": {
+              "@type": "Person",
+              "name": "aji"
+            },
+            
+            "datePublished": "2026-05-22",
+            "description": "Jupyter notebooks are a cool format, but could be cooler",
+            "isAccessibleForFree": "True"
+          }
+        </script>
+        
+    </head>
+    <body>
+        <header><a href="../">aji's Blog</a>
+        </header>
+
+        <main role="main">
+            <article>
+    <section class="header">
+        
+        <div class="published">2026-05-22</div>
+        <h1>This Could Be a Notebook</h1>
+        
+            <p>Jupyter notebooks are a cool format, but could be cooler</p>
+        
+    </section>
+    <section class="body">
+        <p>I’ve been using Jupyter notebooks for a while now, mostly for small things that
+are the kind of thing Jupyter is good at: loading some data, processing that
+data, plotting some stuff, going back and redoing stuff differently, etc. I like
+that cells can produce rich outputs, even things like progress bars or
+interactive plots. I also like being able to include Markdown cells, which feels
+like it achieves what literate programming was meant to.</p>
+<p>I keep trying to think up ways to use notebooks for other things in a way that
+actually adds value and isn’t just a tech demo, and so far my attempts have
+been unsuccessful. I got a decent part of the way through setting up Hakyll so
+I could use <code>.ipynb</code> files as posts on this blog, but the rate at which jank was
+accumulating made me give up on that idea pretty quickly. (I still think this
+is practical, it just has some rough spots that need to be worked out first.)
+I’ve experimented with using notebooks (with both Python and Deno kernels) for
+simple ops tasks, and keep feeling like a script would do the job better on
+too many axes. I do think there’s value in using notebooks as a format for
+things like analyzing logs, but this is just an ops-flavored version of a task
+we already know notebooks are good for, with CSVs swapped for JSONL files.</p>
+<p>Maybe there’s not actually a problem here, but I think the raw material of the
+notebook workflow has a lot of potential for ops work. To me, the following
+points are critical limitations of the status quo:</p>
+<ul>
+<li><p>Cells can be run out of order, multiple times, etc. This is an important part
+of exploration and experimentation, but makes notebooks pretty ineffective at
+ensuring a series of steps are executed in a specific order a specific number
+of times.</p></li>
+<li><p>Re-running a cell erases the output of previous executions. This means a
+notebook doesn’t tell you what was <em>actually</em> done, only what was done last.</p></li>
+</ul>
+<h2 id="what-i-would-do-differently">What I would do differently</h2>
+<p>I’m imagining a notebook-based tool that enables the following style of
+automation:</p>
+<ul>
+<li><p>A workflow is generated from a parameterized notebook.</p></li>
+<li><p>The workflow executes one cell at a time.</p></li>
+<li><p>The workflow stops on failed cells. The operator can choose to either re-run
+the cell or cancel the workflow. If retrying a failed cell, the workflow will be
+marked as having gone off script.</p></li>
+<li><p>The operator can edit cells, re-run successful cells, or run cells out of
+order. Any of these will also mark the workflow as having gone off script.</p></li>
+<li><p>The exact sequence of cells that were run is logged, with timestamps.</p></li>
+</ul>
+<p>This would be a relatively small addition to current notebook tooling,
+essentially being a “restricted mode” for notebook execution with some
+additional logging. It has a number of properties that I think make it an
+interesting possibility for ops work:</p>
+<ul>
+<li><p>The ability to include rich outputs such as graphs, tables, etc. is useful
+both during and after workflow execution.</p></li>
+<li><p>Auth is consolidated, since all actions are performed by the notebook kernel
+on behalf of the operator. There’s no need to think about SSH keys, API tokens,
+web UI access, etc. Such a tool could also conceivably allow notebooks to be
+executed with a particular role, allowing finer grained control over what
+actions the notebook is allowed to perform.</p></li>
+<li><p>Logging all cell executions provides both valuable audit information as well
+as a good starting point for investigating why a workflow went off script and
+how it might need to be changed.</p></li>
+<li><p>If <code>.ipynb</code> files can be imported as new workflows, then developing a new
+workflow is as simple as opening the notebook editor of your choice and getting
+to work. (Although this workflow tool as described would need to include all
+the functionality necessary for a notebook editor, and in the context of the
+aforementioned auth point, it might make sense to write new workflows directly
+in tool.)</p></li>
+</ul>
+<p>I’m gonna have a look around and see if there’s anything like this out there.</p>
+    </section>
+</article>
+
+<footer>
+    <a href="../">&larr; Index</a>
+    <div class="rights">
+        This work &copy; 2026 by Alex Iadicicco is licensed under
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+            CC BY-NC-SA 4.0
+        </a>
+    </div>
+</footer>
+
+        </main>
+    </body>
+</html>
